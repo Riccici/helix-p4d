@@ -2,12 +2,8 @@ name: build helix p4d image
 on:
   push:
     branches: ["main"]
-    paths:
-      - "."
   pull_request:
     branches: ["main"]
-    paths:
-      - "."
   workflow_dispatch:
 env:
   IMAGE_NAME: helix-p4d
