@@ -7,6 +7,10 @@ if [ ! -d "$P4ROOT/etc" ]; then
     cp -r /etc/perforce/* "$P4ROOT/etc/"
 fi
 
+echo "linking /etc/perforce to $P4ROOT/etc"
+mv /etc/perforce /etc/perforce.orig
+ln -s "$P4ROOT/etc" /etc/perforce
+
 # setup depots directory
 echo "checking depots directory..."
 if [ ! -d "$P4DEPOTS" ]; then
@@ -17,16 +21,6 @@ if [ ! -d "$P4DEPOTS" ]; then
     echo "Setting depots root path: $P4DEPOTS"
     p4 configure set server.depot.root=$P4DEPOTS
 fi
-
-echo "checking typemap..."
-if [ ! -z "$TYPEMAP_URL" ]; then
-    echo "Downloading typemap from $TYPEMAP_URL"
-    wget $TYPEMAP_URL -q -O - | p4 typemap -i
-fi
-
-echo "linking /etc/perforce to $P4ROOT/etc"
-mv /etc/perforce /etc/perforce.orig
-ln -s "$P4ROOT/etc" /etc/perforce
 
 echo "checking server..."
 if ! p4dctl list 2>/dev/null | grep -q "$SERVERID"; then
@@ -40,4 +34,10 @@ if ! p4dctl list 2>/dev/null | grep -q "$SERVERID"; then
     # --unicode: Enable Perforce Server's unicode support.
     # --case:  Perforce Server's case sensitivity. (0=sensitive[default],1=insensitive)
     /opt/perforce/sbin/configure-helix-p4d.sh "$SERVERID" -n -p "$P4PORT" -r "$P4ROOT" -u "$P4USER" -P "$P4PASSWD" --unicode --case 1
+fi
+
+echo "checking typemap..."
+if [ ! -z "$TYPEMAP_URL" ]; then
+    echo "Downloading typemap from $TYPEMAP_URL"
+    wget $TYPEMAP_URL -q -O - | p4 typemap -i
 fi
