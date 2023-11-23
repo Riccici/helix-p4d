@@ -22,7 +22,7 @@ echo "checking typemap..."
 if [ ! -z "$TYPEMAP_URL" ]; then
     echo "Downloading typemap from $TYPEMAP_URL"
     wget $TYPEMAP_URL -q -O - | p4 typemap -i
-else
+fi
 
 echo "linking /etc/perforce to $P4ROOT/etc"
 mv /etc/perforce /etc/perforce.orig
