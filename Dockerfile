@@ -35,7 +35,7 @@ RUN \
 # why this 5 packages? see https://www.perforce.com/manuals/p4sag/Content/P4SAG/install.linux.packages.install.html
 RUN apt-get install -y helix-p4d helix-p4dctl helix-proxy helix-broker helix-cli
 
-COPY --chmod=+x scripts/*.sh /usr/local/bin/
+COPY --chmod=777 scripts/*.sh /usr/local/bin/
 
 ENV P4ROOT=/p4 \
     P4DEPOTS=/p4/depots
